@@ -48,7 +48,7 @@ def calcular_first(gramatica):
                         if "ε" not in first[simbolo]:
                             break
                 else:
-                    # Todos los símbolos pueden ser ε
+                    # Todos los simbolos pueden ser ε
                     if "ε" not in first[nt]:
                         first[nt].add("ε")
                         cambio = True
@@ -99,7 +99,7 @@ def calcular_follow(gramatica, first):
                         if len(follow[simbolo]) != antes:
                             cambio = True
                     else:
-                        # El símbolo está al final: hereda FOLLOW del padre
+                        # El simbolo esta al final: hereda FOLLOW del padre
                         antes = len(follow[simbolo])
                         follow[simbolo].update(follow[nt])
                         if len(follow[simbolo]) != antes:
@@ -116,7 +116,7 @@ def calcular_predict(gramatica, first, follow):
         for prod in producciones:
             fa   = first_secuencia(prod, first)
             pred = fa - {"ε"}
-            # Si la producción puede generar ε, se agregan los SIGUIENTES
+            # Si la produccion puede generar ε, se agregan los SIGUIENTES
             if "ε" in fa:
                 pred = pred | follow[nt]
             predict[(nt, tuple(prod))] = pred
