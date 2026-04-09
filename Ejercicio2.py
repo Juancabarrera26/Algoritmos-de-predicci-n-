@@ -131,14 +131,14 @@ predict = calcular_predict(gramatica, first, follow)
 
 orden = ["S", "A", "B", "C", "D"]
 
-print("PRIMEROS")
+print("Primeros")
 for nt in orden:
     print(f"  FIRST({nt})  = {sorted(first[nt])}")
 
-print("\nSIGUIENTES")
+print("Siguientes")
 for nt in orden:
     print(f"  FOLLOW({nt}) = {sorted(follow[nt])}")
 
-print("\nPREDICCIÓN")
+print("Prediccion")
 for (nt, prod), conj in predict.items():
     print(f"  PREDICT({nt} → {' '.join(prod)}) = {sorted(conj)}")
