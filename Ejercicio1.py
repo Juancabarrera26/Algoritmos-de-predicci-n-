@@ -1,10 +1,4 @@
-# Ejercicio 1 - PRIMEROS, SIGUIENTES y PREDICCIÓN
-#
-# S → A uno B C | S dos
-# A → B C D | A tres | ε
-# B → D cuatro C tres | ε
-# C → cinco D B | ε
-# D → seis | ε
+# Ejercicio 1 
 
 gramatica = {
     "S": [["A", "uno", "B", "C"], ["S", "dos"]],
@@ -18,7 +12,7 @@ no_terminales   = {"S", "A", "B", "C", "D"}
 simbolo_inicial = "S"
 
 
-# ── PRIMEROS ──────────────────────────────────────────────────────────────────
+# Primeros
 
 def calcular_first(gramatica):
     first = {nt: set() for nt in no_terminales}
@@ -29,14 +23,14 @@ def calcular_first(gramatica):
         for nt, producciones in gramatica.items():
             for prod in producciones:
 
-                # Producción vacía
+                # Produccion vacia
                 if prod == ["ε"]:
                     if "ε" not in first[nt]:
                         first[nt].add("ε")
                         cambio = True
                     continue
 
-                # Recorrer símbolos hasta encontrar uno que no derive ε
+                # Recorrer simbolos hasta encontrar uno que no derive ε
                 for simbolo in prod:
                     if simbolo not in no_terminales:
                         # Terminal: se agrega y se para
@@ -45,16 +39,16 @@ def calcular_first(gramatica):
                             cambio = True
                         break
                     else:
-                        # No-terminal: se agrega su FIRST (sin ε)
+                        # No-terminal: se agrega su first (sin ε)
                         antes = len(first[nt])
                         first[nt].update(first[simbolo] - {"ε"})
                         if len(first[nt]) != antes:
                             cambio = True
-                        # Solo se continúa si este símbolo puede ser ε
+                        # Solo se continua si este simbolo puede ser ε
                         if "ε" not in first[simbolo]:
                             break
                 else:
-                    # Todos los símbolos pueden ser ε
+                    # Todos los simbolos pueden ser ε
                     if "ε" not in first[nt]:
                         first[nt].add("ε")
                         cambio = True
@@ -62,7 +56,7 @@ def calcular_first(gramatica):
     return first
 
 
-# ── FIRST de una secuencia (usado en SIGUIENTES y PREDICCIÓN) ─────────────────
+# ── FIRST de una secuencia (usado en siguientes y prediccion)
 
 def first_secuencia(secuencia, first):
     resultado = set()
@@ -78,7 +72,7 @@ def first_secuencia(secuencia, first):
     return resultado
 
 
-# ── SIGUIENTES ────────────────────────────────────────────────────────────────
+# Siguientes
 
 def calcular_follow(gramatica, first):
     follow = {nt: set() for nt in no_terminales}
@@ -105,7 +99,7 @@ def calcular_follow(gramatica, first):
                         if len(follow[simbolo]) != antes:
                             cambio = True
                     else:
-                        # El símbolo está al final: hereda FOLLOW del padre
+                        # El simbolo esta al final: hereda FOLLOW del padre
                         antes = len(follow[simbolo])
                         follow[simbolo].update(follow[nt])
                         if len(follow[simbolo]) != antes:
@@ -114,7 +108,7 @@ def calcular_follow(gramatica, first):
     return follow
 
 
-# ── PREDICCIÓN ────────────────────────────────────────────────────────────────
+# Prediccion
 
 def calcular_predict(gramatica, first, follow):
     predict = {}
@@ -122,14 +116,14 @@ def calcular_predict(gramatica, first, follow):
         for prod in producciones:
             fa   = first_secuencia(prod, first)
             pred = fa - {"ε"}
-            # Si la producción puede generar ε, se agregan los SIGUIENTES
+            # Si la produccion puede generar ε, se agregan los siguientes
             if "ε" in fa:
                 pred = pred | follow[nt]
             predict[(nt, tuple(prod))] = pred
     return predict
 
 
-# ── Resultados ────────────────────────────────────────────────────────────────
+# Resultados
 
 first   = calcular_first(gramatica)
 follow  = calcular_follow(gramatica, first)
@@ -137,14 +131,14 @@ predict = calcular_predict(gramatica, first, follow)
 
 orden = ["S", "A", "B", "C", "D"]
 
-print("PRIMEROS")
+print("Primeros")
 for nt in orden:
     print(f"  FIRST({nt})  = {sorted(first[nt])}")
 
-print("\nSIGUIENTES")
+print("Siguientes")
 for nt in orden:
     print(f"  FOLLOW({nt}) = {sorted(follow[nt])}")
 
-print("\nPREDICCIÓN")
+print("Prediccion")
 for (nt, prod), conj in predict.items():
     print(f"  PREDICT({nt} → {' '.join(prod)}) = {sorted(conj)}")
