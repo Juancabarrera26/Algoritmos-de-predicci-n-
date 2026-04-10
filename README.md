@@ -1,4 +1,4 @@
-# Procesadores de Lenguaje — FIRST, FOLLOW y PREDICCION
+# Procesadores de Lenguaje — PRIMEROS, SIGUIENTES y PREDICCION
 
 > Calculo de los conjuntos de **PRIMEROS**, **SIGUIENTES** y **PREDICCION** para dos gramáticas libres de contexto.
 
@@ -320,4 +320,4 @@ D → ε
 |`D → ε`         |{ cuatro, cinco, seis, tres, uno }|
 
 
-> **La gramática 2 SÍ es LL(1)**: los conjuntos de PREDICCION de todas las reglas con el mismo no-terminal son disjuntos, por lo que un parser descendente determinista puede elegir unívocamente que produccion aplicar en cada caso.
+> **La gramatica 2 si es LL(1)**: los conjuntos de PREDICCION de todas las reglas con el mismo no-terminal son disjuntos, por lo que un parser descendente determinista puede elegir que produccion aplicar en cada caso.
